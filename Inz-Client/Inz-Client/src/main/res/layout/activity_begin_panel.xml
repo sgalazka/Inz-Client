@@ -1,0 +1,53 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".BeginPanel">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="300sp"
+        android:text="@string/scanner_start"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:id="@+id/scannerStart"
+        android:layout_marginTop="129dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/begin_panel_typeName" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="300sp"
+        android:text="@string/bluetooth_btn"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:id="@+id/bluetooth_btn"
+        android:layout_below="@+id/scannerStart"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="300sp"
+        android:text="@string/begin_panel_to_database"
+        android:id="@+id/begin_panel_addToDatabase"
+        android:textStyle="bold"
+        android:layout_below="@+id/bluetooth_btn"
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/begin_panel_type_name"
+        android:id="@+id/begin_panel_typeName"
+        android:textStyle="bold"
+        android:layout_below="@+id/begin_panel_addToDatabase"
+        android:layout_centerHorizontal="true"
+        android:width="300sp"
+        android:textSize="20sp" />
+</RelativeLayout>

@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">Inz</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="scanner_start">Skanuj kod</string>
+    <string name="title_activity_scanner">Scanner</string>
+    <string name="title_activity_bluetooth">BluetoothActivity</string>
+    <string name="let_show">Pokaż się</string>
+    <string name="find_others">Znajdź inne</string>
+    <string name="show_paired">Pokaż sparowane</string>
+    <string name="be_server">Serwer</string>
+    <string name="be_client">Klient</string>
+    <string name="state">Stan</string>
+    <string name="tv_mac">Adres MAC serwera</string>
+    <string name="bluetooth_btn">Dostosuj Bluetooth</string>
+    <string name="title_activity_btdevices_list">BTDevicesList</string>
+    <string name="bondedStatus">Sparowany</string>
+    <string name="not_bondedStatus">Niesparowany</string>
+    <string name="choose_device">Wybierz serwer:</string>
+    <string name="device_searching">Wyszukiwanie...</string>
+    <string name="bt_dialog_question">Czy chcesz sie połączyć z serwerem:</string>
+    <string name="bt_dialog_connect">Połącz</string>
+    <string name="bt_dialog_another">Inne</string>
+    <string name="begin_panel_lack_of_connection">Brak połączenia!</string>
+    <string name="begin_panel_question_1">Czy chcesz się połączyć z serwerem:</string>
+    <string name="begin_panel_to_database">Dodaj do bazy towarów</string>
+    <string name="begin_panel_type_name">Wyszukaj po nazwie</string>
+    <string name="title_activity_scan_product">ScanProduct</string>
+    <string name="amount_of">Ilość</string>
+    <string name="barCodeOf">Kod Kreskowy:</string>
+    <string name="ok">Ok</string>
+    <string name="nameOf">Nazwa:</string>
+    <string name="codeOf">Kod z kasy:</string>
+    <string name="addBarcode">Dodaj kod kreskowy</string>
+    <string name="addToDatabase">Dodaj do bazy danych</string>
+    <string name="barcodeOf">Kod kreskowy:</string>
+</resources>

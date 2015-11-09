@@ -1,0 +1,2 @@
+include ':Inz-Client'
+include ':cameraTest'

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="pl.edu.pw.sgalazka.inz.AddToDatabase">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/nameOf"
+        android:id="@+id/addToDatabaseNameOf"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:autoText="false"
+        android:textSize="30sp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/addToDatabaseName"
+        android:layout_below="@+id/addToDatabaseNameOf"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:textSize="30sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/codeOf"
+        android:id="@+id/addToDatabaseCodeOf"
+        android:layout_below="@+id/addToDatabaseName"
+        android:layout_centerHorizontal="true"
+        android:textSize="30sp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/addToDatabase_code"
+        android:layout_below="@+id/addToDatabaseCodeOf"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/addToDatabaseName"
+        android:singleLine="false"
+        android:textSize="30sp"  />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/amount_of"
+        android:id="@+id/addToDatabaseAmountOf"
+        android:layout_below="@+id/addToDatabase_code"
+        android:layout_centerHorizontal="true"
+        android:textSize="30sp"  />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/addToDatabaseAmount"
+        android:layout_below="@+id/addToDatabaseAmountOf"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/addToDatabase_code"
+        android:textSize="30sp"  />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/addBarcode"
+        android:id="@+id/addToDatabaseAddBarcode"
+        android:textSize="20sp"
+        android:layout_above="@+id/addToDatabase_add"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/addToDatabase_add" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/addToDatabase"
+        android:id="@+id/addToDatabase_add"
+        android:textSize="20sp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/addToDatabaseAmount" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/barcodeOf"
+        android:id="@+id/addToDatabaseBarcodeOf"
+        android:layout_below="@+id/addToDatabaseAmount"
+        android:layout_centerHorizontal="true"
+        android:textSize="30sp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/addToDatabaseBarcode"
+        android:layout_below="@+id/addToDatabaseBarcodeOf"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/addToDatabaseAmount"
+        android:textSize="30sp" />
+
+</RelativeLayout>
