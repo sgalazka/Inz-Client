@@ -55,6 +55,7 @@ public class AddToDatabase extends Activity {
         if(requestCode == ADD_TO_DATABASE_REQUEST_CODE){
             String barCodeData = data.getStringExtra("barcode");
             barcode.setText(barCodeData);
+            AddToDatabase.this.finish();
         }
     }
 }

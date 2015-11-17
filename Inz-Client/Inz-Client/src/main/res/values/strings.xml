@@ -25,7 +25,7 @@
     <string name="begin_panel_lack_of_connection">Brak połączenia!</string>
     <string name="begin_panel_question_1">Czy chcesz się połączyć z serwerem:</string>
     <string name="begin_panel_to_database">Dodaj do bazy towarów</string>
-    <string name="begin_panel_type_name">Wyszukaj po nazwie</string>
+    <string name="begin_panel_type_name">Wpisz kod ręcznie</string>
     <string name="title_activity_scan_product">ScanProduct</string>
     <string name="amount_of">Ilość</string>
     <string name="barCodeOf">Kod Kreskowy:</string>

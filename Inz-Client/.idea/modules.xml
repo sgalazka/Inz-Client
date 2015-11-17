@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Inz-Client.iml" filepath="$PROJECT_DIR$/Inz-Client.iml" />
       <module fileurl="file://$PROJECT_DIR$/Inz-Client/Inz-Client-Inz-Client.iml" filepath="$PROJECT_DIR$/Inz-Client/Inz-Client-Inz-Client.iml" />
-      <module fileurl="file://$PROJECT_DIR$/cameraTest/cameraTest.iml" filepath="$PROJECT_DIR$/cameraTest/cameraTest.iml" />
     </modules>
   </component>
 </project>

@@ -10,7 +10,6 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/Inz-Client" />
-            <option value="$PROJECT_DIR$/cameraTest" />
           </set>
         </option>
       </GradleProjectSettings>

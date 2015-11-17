@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import pl.edu.pw.sgalazka.inz.BeginPanel;
@@ -125,7 +126,15 @@ public class BTDevicesList extends ActionBarActivity implements AdapterView.OnIt
         BluetoothAdapter ba = BluetoothAdapter.getDefaultAdapter();
         ba.getProfileProxy(context, new ConnectionListener(), BluetoothProfile.A2DP);
         BluetoothDevice serwer = ba.getRemoteDevice(adresses.get(position));
+        if(BeginPanel.getConnectedSocket()!=null){
+            try {
+                BeginPanel.getConnectedSocket().close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         new ClientBluetooth(serwer, context).start();
+
 
         ba.cancelDiscovery();
         this.unregisterReceiver(broadcastReceiver);
