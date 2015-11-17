@@ -163,7 +163,7 @@ public class Scanner extends Activity implements SurfaceHolder.Callback{
                     Toast.makeText(Scanner.this, scanResult,
                             Toast.LENGTH_SHORT).show();
                     Intent resultData = new Intent();
-                    resultData.putExtra("barcode", scanResult+":"+result2);
+                    resultData.putExtra("barcode", scanResult);
                     setResult(Activity.RESULT_OK, resultData);
                     Scanner.this.finish();
 

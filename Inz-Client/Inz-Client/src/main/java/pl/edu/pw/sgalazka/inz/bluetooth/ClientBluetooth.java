@@ -42,6 +42,7 @@ public class ClientBluetooth extends Thread {
 
         }
         mmSocket = tmp;
+        BeginPanel.setConnectedSocket(mmSocket);
         toSend = SendBuffer.toSend;
 
 

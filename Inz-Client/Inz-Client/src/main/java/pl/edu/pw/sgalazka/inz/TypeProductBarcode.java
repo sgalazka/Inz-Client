@@ -34,7 +34,7 @@ public class TypeProductBarcode extends Activity {
                     Toast.makeText(TypeProductBarcode.this, "Wprowadź kod kreskowy!", Toast.LENGTH_LONG).show();
                 }
                 else{
-                    String dataToSend = "B" + barcode + ":" + amount.getText();
+                    String dataToSend = "B:" + barcode.getText() + ":" + amount.getText();
                     SendBuffer.toSend.add(dataToSend);
                     TypeProductBarcode.this.finish();
                 }
