@@ -1,11 +1,11 @@
-package pl.edu.pw.sgalazka.inz.bluetooth;
+package pl.edu.pw.sgalazka.inz.devicesList;
 
 import android.content.Context;
 
 import pl.edu.pw.sgalazka.inz.R;
 
 /**
- * Created by ga³¹zka on 2015-09-06.
+ * Created by gaï¿½ï¿½zka on 2015-09-06.
  */
 public class BTDeviceRow {
 

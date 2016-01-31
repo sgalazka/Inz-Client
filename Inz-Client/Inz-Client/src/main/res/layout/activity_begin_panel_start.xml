@@ -25,30 +25,12 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="54dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/start_name_address"
-        android:layout_below="@+id/start_question"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="33dp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/bt_dialog_connect"
-        android:id="@+id/start_connect"
-        android:layout_below="@+id/start_name_address"
-        android:layout_alignEnd="@+id/start_question"
-        android:layout_marginTop="79dp" />
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/bt_dialog_another"
         android:id="@+id/start_another_devices"
-        android:layout_alignTop="@+id/start_connect"
-        android:layout_alignStart="@+id/start_question" />
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="20dp" />
 </RelativeLayout>

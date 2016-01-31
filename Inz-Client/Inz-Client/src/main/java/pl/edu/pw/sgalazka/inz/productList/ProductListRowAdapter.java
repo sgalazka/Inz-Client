@@ -1,6 +1,5 @@
-package pl.edu.pw.sgalazka.inz.bluetooth;
+package pl.edu.pw.sgalazka.inz.productList;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,14 +10,15 @@ import android.widget.TextView;
 import pl.edu.pw.sgalazka.inz.R;
 
 /**
- * Created by ga³¹zka on 2015-09-06.
+ * Created by gaÅ‚Ä…zka on 2016-01-12.
  */
-public class RowAdapter extends ArrayAdapter<BTDeviceRow> {
+public class ProductListRowAdapter extends ArrayAdapter<ProductListRow> {
+
     Context context;
     int layoutResourceId;
-    BTDeviceRow data[] = null;
+    ProductListRow data[] = null;
 
-    public RowAdapter(Context context, int layoutResourceId, BTDeviceRow[] data) {
+    public ProductListRowAdapter(Context context, int layoutResourceId, ProductListRow[] data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
@@ -36,10 +36,13 @@ public class RowAdapter extends ArrayAdapter<BTDeviceRow> {
             row = inflater.inflate(layoutResourceId, parent, false);
 
             holder = new RowBeanHolder();
-            holder.btdevice_name = (TextView)row.findViewById(R.id.btdevice_name);
-            holder.btdevice_bonded = (TextView)row.findViewById(R.id.btdevice_bonded);
-            holder.btdevice_name.setFocusable(false);
-            holder.btdevice_bonded.setFocusable(false);
+            holder.productName = (TextView)row.findViewById(R.id.plname);
+            holder.productBarcode = (TextView)row.findViewById(R.id.plbarcode);
+            holder.productQuantity = (TextView)row.findViewById(R.id.plquantity);
+            holder.productName.setFocusable(false);
+            holder.productBarcode.setFocusable(false);
+            holder.productQuantity.setFocusable(false);
+
             row.setTag(holder);
         }
         else
@@ -47,16 +50,18 @@ public class RowAdapter extends ArrayAdapter<BTDeviceRow> {
             holder = (RowBeanHolder)row.getTag();
         }
 
-        BTDeviceRow object = data[position];
-        holder.btdevice_name.setText(object.getName());
-        holder.btdevice_bonded.setText(context.getString(object.getBonded().getId()));
+        ProductListRow object = data[position];
+        holder.productName.setText(object.getName());
+        holder.productBarcode.setText(object.getBarcode());
+        holder.productQuantity.setText(object.getQuantity());
 
         return row;
     }
 
     static class RowBeanHolder
     {
-        TextView btdevice_name;
-        TextView btdevice_bonded;
+        TextView productName;
+        TextView productBarcode;
+        TextView productQuantity;
     }
 }

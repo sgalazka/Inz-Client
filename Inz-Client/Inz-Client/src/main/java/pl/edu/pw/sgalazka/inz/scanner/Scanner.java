@@ -43,6 +43,7 @@ public class Scanner extends Activity implements SurfaceHolder.Callback{
 
     private boolean barcodeScanned = false;
     private boolean previewing = true;
+    private static final int TO_TRIM = 75;
 
     private String results[];
 
@@ -80,7 +81,7 @@ public class Scanner extends Activity implements SurfaceHolder.Callback{
 
         preview.addView(mPreview);
 
-        scanButton = (Button) findViewById(R.id.button_capture);
+        /*scanButton = (Button) findViewById(R.id.button_capture);
 
         //releaseCamera();
 
@@ -90,18 +91,18 @@ public class Scanner extends Activity implements SurfaceHolder.Callback{
                     startScanning();
                 }
             }
-        });
+        });*/
     }
 
 
-    @Override
+    /*@Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             // SCAdminTapToScanScreen.isFromAssetDetail = false;
             releaseCamera();
         }
         return super.onKeyDown(keyCode, event);
-    }
+    }*/
 
 
     /**
@@ -141,14 +142,14 @@ public class Scanner extends Activity implements SurfaceHolder.Callback{
             Image barcodeToCrop = new Image(size.width, size.height, "Y800");
             barcode.setData(data);
             barcodeToCrop.setData(data);
-            int width = size.width - 300;
-            int height = size.height - 300;
-            barcodeToCrop.setCrop(150, 150, width, height);
+            int width = size.width - TO_TRIM*2;
+            int height = size.height - TO_TRIM*2;
+            barcodeToCrop.setCrop(TO_TRIM, TO_TRIM, width, height);
 
             int result = scanner.scanImage(barcodeToCrop);
 
             if (result != 0) {
-                int result2 = scanner.scanImage(barcode);
+                //int result2 = scanner.scanImage(barcode);
                 previewing = false;
                 mCamera.setPreviewCallback(null);
                 mCamera.stopPreview();
@@ -166,7 +167,6 @@ public class Scanner extends Activity implements SurfaceHolder.Callback{
                     resultData.putExtra("barcode", scanResult);
                     setResult(Activity.RESULT_OK, resultData);
                     Scanner.this.finish();
-
                 }
             }
         }
@@ -184,14 +184,6 @@ public class Scanner extends Activity implements SurfaceHolder.Callback{
         mCamera.startPreview();
         previewing = true;
         mCamera.autoFocus(autoFocusCB);
-    }
-
-    private int getResultNumber() {
-        return resultNumber;
-    }
-
-    private void setResultNumber(int resultNumber) {
-        this.resultNumber = resultNumber;
     }
 
     @Override
@@ -223,11 +215,6 @@ public class Scanner extends Activity implements SurfaceHolder.Callback{
         }
     }
 
-    public boolean checkEan13(String barCode){
-        // TODO: 2015-10-01 napisać kod sprawdzający parzystość
-        return true;
-    }
-
     @Override
     public void onPause() {
         super.onPause();
@@ -249,17 +236,23 @@ public class Scanner extends Activity implements SurfaceHolder.Callback{
     private void drawMyStuff(final Canvas canvas) {
         Random random = new Random();
         Log.i("INFO", "Drawing...");
-        //canvas.drawRGB(255, 128, 128);
 
         Paint paint = new Paint();
-        paint.setColor(Color.RED);
-        paint.setStyle(Paint.Style.STROKE);
+        paint.setColor(Color.parseColor("#70ffffff"));
+        paint.setStyle(Paint.Style.FILL_AND_STROKE);
 
-        Rect rect = new Rect();
-        rect.set(150, 150, canvas.getWidth() - 150, canvas.getHeight() - 150);
+        Rect rect1 = new Rect();
+        rect1.set(0, 0, TO_TRIM, canvas.getHeight());
+        Rect rect2 = new Rect();
+        rect2.set(canvas.getWidth() - TO_TRIM, 0, canvas.getWidth(), canvas.getHeight());
+        Rect rect3 = new Rect();
+        rect3.set(TO_TRIM, 0, canvas.getWidth() - TO_TRIM, TO_TRIM);
+        Rect rect4 = new Rect();
+        rect4.set(TO_TRIM, canvas.getHeight() - TO_TRIM, canvas.getWidth() - TO_TRIM, canvas.getHeight());
 
-        canvas.drawRect(rect, paint);
+        canvas.drawRect(rect1, paint);
+        canvas.drawRect(rect2, paint);
+        canvas.drawRect(rect3, paint);
+        canvas.drawRect(rect4, paint);
     }
-
-
 }

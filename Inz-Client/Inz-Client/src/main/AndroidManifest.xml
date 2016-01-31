@@ -16,7 +16,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".BeginPanel"
+            android:name=".activities.BeginPanel"
             android:label="@string/app_name"
             android:theme="@style/noTitleBar" >
             <intent-filter>
@@ -31,21 +31,29 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".bluetooth.BluetoothActivity"
-            android:label="@string/title_activity_bluetooth" >
-        </activity>
-        <activity
-            android:name=".bluetooth.BTDevicesList"
+            android:name=".devicesList.BTDevicesList"
             android:label="@string/title_activity_btdevices_list" >
         </activity>
         <activity
-            android:name=".ScanProduct"
+            android:name=".activities.ScanProduct"
             android:label="@string/title_activity_scan_product"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
-        <activity android:name=".TypeProductBarcode" >
+        <activity android:name=".activities.TypeProductBarcode" >
         </activity>
-        <activity android:name=".AddToDatabase" >
+        <activity android:name=".activities.AddToDatabase" >
+        </activity>
+        <activity
+            android:name=".productList.ProductList"
+            android:label="@string/title_activity_product_list"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity android:name=".productList.ProductListChooser" >
+        </activity>
+        <activity
+            android:name=".errorList.ErrorList"
+            android:label="@string/title_activity_error_list"
+            android:theme="@style/AppTheme.NoActionBar" >
         </activity>
     </application>
 

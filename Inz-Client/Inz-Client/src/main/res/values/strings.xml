@@ -13,7 +13,7 @@
     <string name="be_client">Klient</string>
     <string name="state">Stan</string>
     <string name="tv_mac">Adres MAC serwera</string>
-    <string name="bluetooth_btn">Dostosuj Bluetooth</string>
+    <string name="bluetooth_btn">Zmień serwer</string>
     <string name="title_activity_btdevices_list">BTDevicesList</string>
     <string name="bondedStatus">Sparowany</string>
     <string name="not_bondedStatus">Niesparowany</string>
@@ -21,9 +21,9 @@
     <string name="device_searching">Wyszukiwanie...</string>
     <string name="bt_dialog_question">Czy chcesz sie połączyć z serwerem:</string>
     <string name="bt_dialog_connect">Połącz</string>
-    <string name="bt_dialog_another">Inne</string>
+    <string name="bt_dialog_another">Wyszukaj serwer</string>
     <string name="begin_panel_lack_of_connection">Brak połączenia!</string>
-    <string name="begin_panel_question_1">Czy chcesz się połączyć z serwerem:</string>
+    <string name="begin_panel_question_1">Połączenie z serwerem nie jest nawiązane</string>
     <string name="begin_panel_to_database">Dodaj do bazy towarów</string>
     <string name="begin_panel_type_name">Wpisz kod ręcznie</string>
     <string name="title_activity_scan_product">ScanProduct</string>
@@ -35,4 +35,26 @@
     <string name="addBarcode">Dodaj kod kreskowy</string>
     <string name="addToDatabase">Dodaj do bazy danych</string>
     <string name="barcodeOf">Kod kreskowy:</string>
+    <string name="title_activity_product_list">ProductList</string>
+    <string name="get_products">Pokaż produkty na wyczerpaniu</string>
+    <string name="list_of_products_from">Lista produktów z ilością mniejszą niż</string>
+    <string name="max_quantity_to_show">Ilość sztuk produktu poniżej:</string>
+    <string name="show_all">Wyświetl wszystkie</string>
+    <string name="show_selected">Wyświetl wybrane</string>
+    <string name="vat_groups_spinner_prompt">Wybierz grupę VAT</string>
+    <string name="vat_groups_label">Grupa podatkowa VAT:</string>
+    <string name="is_packaging">Jest opakowaniem?</string>
+    <string name="price">Cena</string>
+
+    <string-array name="vat_groups">
+        <item>A</item>
+        <item>B</item>
+        <item>C</item>
+        <item>D</item>
+        <item>E</item>
+        <item>F</item>
+        <item>G</item>
+    </string-array>
+    <string name="title_activity_error_list">ErrorList</string>
+    <string name="show_errors_label">Pokaż błędy</string>
 </resources>
