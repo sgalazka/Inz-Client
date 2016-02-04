@@ -6,11 +6,19 @@
     android:layout_marginRight="5dp">
 
     <TextView
-        android:id="@+id/err_message"
+        android:id="@+id/err_message1"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
         android:textColor="#000000"
         android:textSize="35sp"
+        android:textStyle="bold"/>
+    <TextView
+        android:id="@+id/err_message2"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:textColor="#000000"
+        android:textSize="35sp"
+        android:layout_below="@+id/err_message1"
         android:textStyle="bold"/>
 
 </RelativeLayout>

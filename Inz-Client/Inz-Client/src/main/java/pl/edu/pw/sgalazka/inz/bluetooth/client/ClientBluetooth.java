@@ -3,7 +3,6 @@ package pl.edu.pw.sgalazka.inz.bluetooth.client;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import java.io.IOException;
@@ -14,8 +13,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import pl.edu.pw.sgalazka.inz.activities.BeginPanel;
 import pl.edu.pw.sgalazka.inz.InzApplication;
-import pl.edu.pw.sgalazka.inz.bluetooth.server.ServerBluetooth;
-import pl.edu.pw.sgalazka.inz.devicesList.OnConnectedCallback;
+import pl.edu.pw.sgalazka.inz.activities.ScannerResultCallback;
+import pl.edu.pw.sgalazka.inz.devicesList.ConnectedCallback;
 
 /**
  * Created by ga��zka on 2015-09-04.
@@ -28,9 +27,9 @@ public class ClientBluetooth extends Thread {
     private final BluetoothSocket mmSocket;
     private final BluetoothDevice mmDevice;
     private PrintWriter out;
-    private OnConnectedCallback callback;
+    private ConnectedCallback connectedCallback;
 
-    public ClientBluetooth(BluetoothDevice device, Context context, OnConnectedCallback callback) {
+    public ClientBluetooth(BluetoothDevice device, Context context, ConnectedCallback connectedCallback) {
 
         BluetoothSocket tmp = null;
         mmDevice = device;
@@ -43,7 +42,7 @@ public class ClientBluetooth extends Thread {
         }
         mmSocket = tmp;
         BeginPanel.setConnectedSocket(mmSocket);
-        this.callback = callback;
+        this.connectedCallback = connectedCallback;
     }
     @Override
     public void run() {
@@ -53,7 +52,7 @@ public class ClientBluetooth extends Thread {
             mmSocket.connect();
 
             out = new PrintWriter(mmSocket.getOutputStream(), true);
-            InzApplication.startServer(callback);
+            InzApplication.startServer(connectedCallback);
 
             out.println(InzApplication.START_BLUETOOTH);
 

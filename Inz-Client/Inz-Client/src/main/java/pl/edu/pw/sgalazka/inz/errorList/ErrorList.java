@@ -43,6 +43,7 @@ public class ErrorList extends Activity implements Runnable, AdapterView.OnItemC
 
         listView = (ListView) findViewById(R.id.errorList);
         title = (EditText) findViewById(R.id.errorList_title);
+        listView.setOnItemClickListener(this);
 
         runOnUiThread(showList);
     }
@@ -80,7 +81,8 @@ public class ErrorList extends Activity implements Runnable, AdapterView.OnItemC
                 ErrorListRow errors[] = new ErrorListRow[errorList.size()];
 
                 for (int i = 0; i < errorList.size(); i++) {
-                    errors[i] = new ErrorListRow(getApplicationContext(), errorList.get(i));
+                    String tmp[] = errorList.get(i).split(":");
+                    errors[i] = new ErrorListRow( getApplicationContext(), tmp[0],tmp[1]);
                 }
 
                 ErrorListRowAdapter adapter = new ErrorListRowAdapter(getApplicationContext(),

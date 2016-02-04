@@ -7,7 +7,7 @@ import android.content.res.Configuration;
 import android.util.Log;
 
 import pl.edu.pw.sgalazka.inz.bluetooth.client.ClientBluetooth;
-import pl.edu.pw.sgalazka.inz.devicesList.OnConnectedCallback;
+import pl.edu.pw.sgalazka.inz.devicesList.ConnectedCallback;
 import pl.edu.pw.sgalazka.inz.bluetooth.server.ServerBluetooth;
 
 /**
@@ -64,7 +64,7 @@ public class InzApplication extends Application {
 
 
     public static void startClient(BluetoothDevice bluetoothDevice, Context context,
-                                   OnConnectedCallback callback) {
+                                   ConnectedCallback callback) {
 
         if (clientBluetooth != null) {
             ClientBluetooth.toSend.add(STOP_CLIENT);
@@ -73,7 +73,7 @@ public class InzApplication extends Application {
         clientBluetooth.start();
     }
 
-    public static void startServer(final OnConnectedCallback callback) {
+    public static void startServer(final ConnectedCallback callback) {
         if (serverBluetooth != null) {
             Log.d(TAG, "server is not null");
             serverBluetooth.StopRunning();

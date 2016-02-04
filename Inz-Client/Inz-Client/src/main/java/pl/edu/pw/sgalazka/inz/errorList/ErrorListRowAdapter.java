@@ -36,8 +36,10 @@ public class ErrorListRowAdapter extends ArrayAdapter<ErrorListRow> {
             row = inflater.inflate(layoutResourceId, parent, false);
 
             holder = new RowBeanHolder();
-            holder.message = (TextView)row.findViewById(R.id.err_message);
-            holder.message.setFocusable(false);
+            holder.message1 = (TextView)row.findViewById(R.id.err_message1);
+            holder.message1.setFocusable(false);
+            holder.message2 = (TextView)row.findViewById(R.id.err_message2);
+            holder.message2.setFocusable(false);
 
             row.setTag(holder);
         }
@@ -47,13 +49,15 @@ public class ErrorListRowAdapter extends ArrayAdapter<ErrorListRow> {
         }
 
         ErrorListRow object = data[position];
-        holder.message.setText(object.getMessage());
+        holder.message1.setText(object.getMessage1());
+        holder.message2.setText(object.getMessage2());
 
         return row;
     }
 
     static class RowBeanHolder
     {
-        TextView message;
+        TextView message1;
+        TextView message2;
     }
 }

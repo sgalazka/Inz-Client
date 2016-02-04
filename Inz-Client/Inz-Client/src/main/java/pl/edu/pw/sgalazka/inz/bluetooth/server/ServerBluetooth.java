@@ -13,8 +13,10 @@ import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 
 import pl.edu.pw.sgalazka.inz.InzApplication;
+import pl.edu.pw.sgalazka.inz.activities.AddingResultCallback;
+import pl.edu.pw.sgalazka.inz.activities.ScannerResultCallback;
 import pl.edu.pw.sgalazka.inz.bluetooth.client.ClientBluetooth;
-import pl.edu.pw.sgalazka.inz.devicesList.OnConnectedCallback;
+import pl.edu.pw.sgalazka.inz.devicesList.ConnectedCallback;
 import pl.edu.pw.sgalazka.inz.errorList.ErrorList;
 import pl.edu.pw.sgalazka.inz.productList.ListDataReceiver;
 
@@ -27,7 +29,7 @@ public class ServerBluetooth extends Thread {
 
     private final BluetoothServerSocket mmServerSocket;
     private boolean running;
-    private OnConnectedCallback callback;
+    private ConnectedCallback connectedCallback;
     private long watchDogTimer;
     private final Object watchDogLock = new Object();
     private static final Object reciverLock = new Object();
@@ -35,9 +37,11 @@ public class ServerBluetooth extends Thread {
     private static final String HEART_BEAT = "HeartBeat";
     private boolean initialized;
     private static ListDataReceiver listDataReceiver = null;
+    private static ScannerResultCallback scannerResultCallback = null;
+    private static AddingResultCallback addingResultCallback= null;
     private BlockingQueue<String> toErrorList;
 
-    public ServerBluetooth(OnConnectedCallback callback) {
+    public ServerBluetooth(ConnectedCallback connectedCallback) {
         BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         BluetoothServerSocket tmp = null;
         Log.d(TAG, "Creating Server");
@@ -53,7 +57,7 @@ public class ServerBluetooth extends Thread {
         running = true;
         mmServerSocket = tmp;
         initialized = false;
-        this.callback = callback;
+        this.connectedCallback = connectedCallback;
         toErrorList = ErrorList.errorQueue;
     }
 
@@ -90,13 +94,13 @@ public class ServerBluetooth extends Thread {
         if (tmp.equals(InzApplication.START_BLUETOOTH)) {
             if (isWatchDogError()) {
                 InzApplication.setConnected(false);
-                callback.onConnected(false);
+                connectedCallback.onConnected(false);
             } else {
                 InzApplication.setConnected(true);
-                callback.onConnected(true);
+                connectedCallback.onConnected(true);
             }
         } else if (!tmp.contains("start")) {
-            callback.onConnected(false);
+            connectedCallback.onConnected(false);
             Log.w(TAG, "Connection failed");
             return;
         }
@@ -115,12 +119,23 @@ public class ServerBluetooth extends Thread {
                     setWatchDogTimer(2500);
                     thread = new Thread(heartBeat);
                     thread.start();
-                } else if (tmp.charAt(0) == 'N') {
-                    ErrorList.errorQueue.add(tmp);
                 }
-                else if (tab[0].equals(ListDataReceiver.MSG_CODE)){
-                    Log.d(TAG,tmp);
-                    if(getListDataReciver() != null){
+                else if (tab[0].equals("ENF") || tab[0].equals("BSS") || tab[0].equals("EZQ")) {
+                    if(getScannerResultCallback()!=null){
+                        getScannerResultCallback().onScannerResult(tmp);
+                        setScannerResultCallback(null);
+                    }
+                }else if (tab[0].equals("EEX") || tab[0].equals("DAS")){
+                    if (getAddingResultCallback()!=null){
+                        getAddingResultCallback().onAddingResult(tmp);
+                        setAddingResultCallback(null);
+                    }
+                }
+                else if (tmp.charAt(0) == 'E') {
+                    ErrorList.errorQueue.add(tmp);
+                } else if (tab[0].equals(ListDataReceiver.LIST_DATA_CODE)) {
+                    Log.d(TAG, tmp);
+                    if (getListDataReciver() != null) {
                         Log.d(TAG, "List of products recived");
                         listDataReceiver.onListDataReceive(tmp);
                         setListDataReciver(null);
@@ -185,8 +200,13 @@ public class ServerBluetooth extends Thread {
             running = false;
             Log.d(TAG, "watchdog counted to 0, the connection is failed");
             if (!isInitialized())
-                callback.onConnected(false);
-
+                connectedCallback.onConnected(false);
+            if(getScannerResultCallback()!=null){
+                getScannerResultCallback().onScannerResult("STOP");
+            }
+            if (getAddingResultCallback()!=null){
+                getAddingResultCallback().onAddingResult("STOP");
+            }
         }
     };
 
@@ -232,16 +252,39 @@ public class ServerBluetooth extends Thread {
         }
     }
 
-    public static void setListDataReciver(ListDataReceiver receiver){
-        synchronized (reciverLock){
+    public static void setListDataReciver(ListDataReceiver receiver) {
+        synchronized (reciverLock) {
             listDataReceiver = receiver;
         }
     }
 
-    public static ListDataReceiver getListDataReciver(){
-        synchronized (reciverLock){
+    public static ListDataReceiver getListDataReciver() {
+        synchronized (reciverLock) {
             return listDataReceiver;
         }
     }
 
+    public static void setScannerResultCallback(ScannerResultCallback callback) {
+        synchronized (reciverLock) {
+            scannerResultCallback = callback;
+        }
+    }
+
+    public static ScannerResultCallback getScannerResultCallback() {
+        synchronized (reciverLock) {
+            return scannerResultCallback;
+        }
+    }
+
+    public static void setAddingResultCallback(AddingResultCallback callback) {
+        synchronized (reciverLock) {
+            addingResultCallback = callback;
+        }
+    }
+
+    public static AddingResultCallback getAddingResultCallback() {
+        synchronized (reciverLock) {
+            return addingResultCallback;
+        }
+    }
 }

@@ -31,7 +31,7 @@ public class ProductList extends Activity implements ListDataReceiver{
 
         dialog = ProgressDialog.show(ProductList.this, "Łączenie z serwerem", "Proszę czekać...", true);
         ServerBluetooth.setListDataReciver(this);
-        ClientBluetooth.toSend.add(ListDataReceiver.MSG_CODE + ":" + quantity);
+        ClientBluetooth.toSend.add(ListDataReceiver.LIST_DATA_CODE + ":" + quantity);
 
         /*List<ProductListRow> list = new LinkedList<>();
 

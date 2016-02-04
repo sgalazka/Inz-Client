@@ -11,22 +11,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-import pl.edu.pw.sgalazka.inz.activities.BeginPanel;
 import pl.edu.pw.sgalazka.inz.InzApplication;
 import pl.edu.pw.sgalazka.inz.R;
 
 
-public class BTDevicesList extends Activity implements AdapterView.OnItemClickListener, OnConnectedCallback {
+public class BTDevicesList extends Activity implements AdapterView.OnItemClickListener, ConnectedCallback {
 
     private ArrayList<BTDeviceRow> deviceList = new ArrayList<>();
     private ArrayList<String> adresses = new ArrayList<>();
@@ -57,27 +53,7 @@ public class BTDevicesList extends Activity implements AdapterView.OnItemClickLi
         listView.setOnItemClickListener(this);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_btdevices_list, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -117,15 +93,9 @@ public class BTDevicesList extends Activity implements AdapterView.OnItemClickLi
 
         BluetoothAdapter ba = BluetoothAdapter.getDefaultAdapter();
         //ba.getProfileProxy(context, new ConnectionListener(), BluetoothProfile.A2DP);
-        BluetoothDevice serwer = ba.getRemoteDevice(adresses.get(position));
-        if (BeginPanel.getConnectedSocket() != null) {
-            try {
-                BeginPanel.getConnectedSocket().close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        InzApplication.startClient(serwer, context, this);
+        BluetoothDevice server = ba.getRemoteDevice(adresses.get(position));
+
+        InzApplication.startClient(server, context, this);
         ba.cancelDiscovery();
         dialog = ProgressDialog.show(BTDevicesList.this, "Łączenie z serwerem", "Proszę czekać...", true);
 

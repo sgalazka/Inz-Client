@@ -7,7 +7,7 @@ import java.util.List;
  */
 public interface ListDataReceiver {
 
-    public static final String MSG_CODE = "GPL";
+    public static final String LIST_DATA_CODE = "GPL";
 
     void onListDataReceive(String data);
 }

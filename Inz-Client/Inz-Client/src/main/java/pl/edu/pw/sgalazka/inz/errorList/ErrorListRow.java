@@ -9,16 +9,22 @@ import android.util.Log;
 public class ErrorListRow {
     private Context context;
 
-    private String message = "";
+    private String message1 = "";
+    private String message2 = "";
 
-    public ErrorListRow(Context context, String message){
+    public ErrorListRow(Context context, String message1, String message2){
         this.context = context;
-        this.message = message;
+        this.message1 = message1;
+        this.message2 = message2;
     }
 
-    public String getMessage() {
-        Log.d("ProductListRow", "Get name: " + message);
-        return message;
+    public String getMessage1() {
+        //Log.d("ProductListRow", "Get name: " + message);
+        return message1;
+    }
+    public String getMessage2() {
+        //Log.d("ProductListRow", "Get name: " + message);
+        return message2;
     }
 
 
