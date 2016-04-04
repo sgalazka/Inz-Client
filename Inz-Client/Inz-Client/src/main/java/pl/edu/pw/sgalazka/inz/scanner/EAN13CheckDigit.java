@@ -13,7 +13,7 @@ public class EAN13CheckDigit {
         int sum2 = Integer.parseInt(code[0] + "") + Integer.parseInt(code[2] + "") + Integer.parseInt(code[4] + "")
                 + Integer.parseInt(code[6] + "") + Integer.parseInt(code[8] + "") + Integer.parseInt(code[10] + "");
 
-        int checksum_value = 3*sum1 + sum2;
+        int checksum_value = 3 * sum1 + sum2;
         int checksum_digit = 10 - (checksum_value % 10);
         if (checksum_digit == 10)
             checksum_digit = 0;

@@ -35,18 +35,16 @@ public class ClientBluetooth extends Thread {
         mmDevice = device;
         try {
             UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-            tmp = device.createRfcommSocketToServiceRecord(uuid);
+            tmp = mmDevice.createRfcommSocketToServiceRecord(uuid);
         }
         catch (Exception e) {
-
+            e.printStackTrace();
         }
         mmSocket = tmp;
-        BeginPanel.setConnectedSocket(mmSocket);
         this.connectedCallback = connectedCallback;
     }
     @Override
     public void run() {
-
         try{
             Log.d(TAG, "Lacze z serwerem");
             mmSocket.connect();
@@ -55,21 +53,17 @@ public class ClientBluetooth extends Thread {
             InzApplication.startServer(connectedCallback);
 
             out.println(InzApplication.START_BLUETOOTH);
-
-            Log.d(TAG, "Sent conn");
+            Log.d(TAG, "Sent star message");
         }
         catch (Exception ce) {
             try {
-                Log.d(TAG, ce+"");
+                Log.d(TAG, ce + "");
                 mmSocket.close();
                 return;
-            }
-            catch (Exception cle){
+            } catch (Exception cle) {
                 return;
             }
         }
-
-
         while(true){
             if (!toSend.isEmpty()){
                 try {
@@ -97,6 +91,4 @@ public class ClientBluetooth extends Thread {
             e.printStackTrace();
         }
     }
-
-
 }

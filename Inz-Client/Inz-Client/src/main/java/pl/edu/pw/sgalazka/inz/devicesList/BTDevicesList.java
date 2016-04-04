@@ -21,11 +21,10 @@ import java.util.ArrayList;
 import pl.edu.pw.sgalazka.inz.InzApplication;
 import pl.edu.pw.sgalazka.inz.R;
 
-
 public class BTDevicesList extends Activity implements AdapterView.OnItemClickListener, ConnectedCallback {
 
     private ArrayList<BTDeviceRow> deviceList = new ArrayList<>();
-    private ArrayList<String> adresses = new ArrayList<>();
+    private ArrayList<String> addresses = new ArrayList<>();
     private ListView listView;
     private Context context;
     private BluetoothAdapter ba;
@@ -53,12 +52,9 @@ public class BTDevicesList extends Activity implements AdapterView.OnItemClickLi
         listView.setOnItemClickListener(this);
     }
 
-
-
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-
             String action = intent.getAction();
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
@@ -71,8 +67,7 @@ public class BTDevicesList extends Activity implements AdapterView.OnItemClickLi
 
                 BTDeviceRow row = new BTDeviceRow(getApplicationContext(), device.getName(), bonded);
                 deviceList.add(row);
-                adresses.add(device.getAddress());
-
+                addresses.add(device.getAddress());
 
                 BTDeviceRow[] arr = new BTDeviceRow[deviceList.size()];
                 for (int i = 0; i < deviceList.size(); i++) {
@@ -81,7 +76,6 @@ public class BTDevicesList extends Activity implements AdapterView.OnItemClickLi
 
                 final BTRowAdapter adapter = new BTRowAdapter(getApplicationContext(), R.layout.bt_row, arr);
                 listView.setAdapter(adapter);
-
             }
         }
     };
@@ -89,16 +83,14 @@ public class BTDevicesList extends Activity implements AdapterView.OnItemClickLi
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         BTDeviceRow row = (BTDeviceRow) listView.getItemAtPosition(position);
-        Toast.makeText(context, adresses.get(position), Toast.LENGTH_LONG).show();
+        Toast.makeText(context, addresses.get(position), Toast.LENGTH_LONG).show();
 
         BluetoothAdapter ba = BluetoothAdapter.getDefaultAdapter();
-        //ba.getProfileProxy(context, new ConnectionListener(), BluetoothProfile.A2DP);
-        BluetoothDevice server = ba.getRemoteDevice(adresses.get(position));
+        BluetoothDevice server = ba.getRemoteDevice(addresses.get(position));
 
         InzApplication.startClient(server, context, this);
         ba.cancelDiscovery();
         dialog = ProgressDialog.show(BTDevicesList.this, "Łączenie z serwerem", "Proszę czekać...", true);
-
     }
 
     @Override
@@ -137,7 +129,6 @@ public class BTDevicesList extends Activity implements AdapterView.OnItemClickLi
                 }
             }
         };
-
         this.runOnUiThread(dialogShow);
     }
 }

@@ -21,6 +21,7 @@ import android.widget.Toast;
 import pl.edu.pw.sgalazka.inz.R;
 import pl.edu.pw.sgalazka.inz.bluetooth.client.ClientBluetooth;
 import pl.edu.pw.sgalazka.inz.bluetooth.server.ServerBluetooth;
+import pl.edu.pw.sgalazka.inz.scanner.EAN13CheckDigit;
 import pl.edu.pw.sgalazka.inz.scanner.Scanner;
 
 public class AddToDatabase extends Activity implements AddingResultCallback {
@@ -35,7 +36,6 @@ public class AddToDatabase extends Activity implements AddingResultCallback {
     private Button add;
     private Dialog dialog = null;
     public final int ADD_TO_DATABASE_REQUEST_CODE = 3;
-    private int count = -1;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -51,33 +51,7 @@ public class AddToDatabase extends Activity implements AddingResultCallback {
         vatGroup = (Spinner) findViewById(R.id.addToDatabase_vat_spinner);
         isPackaging = (CheckBox) findViewById(R.id.is_packaging_checkbox);
 
-        addBarCode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), Scanner.class);
-                startActivityForResult(intent, ADD_TO_DATABASE_REQUEST_CODE);
-            }
-        });
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (checkName() && checkBarcode() && checkPrice() && checkAmount() && checkVat()) {
-                    StringBuilder stringBuilder = new StringBuilder("");
-                    stringBuilder.append("D:");
-                    stringBuilder.append(name.getText()).append(":");
-                    stringBuilder.append(barcode.getText()).append(":");
-                    stringBuilder.append(price.getText()).append(":");
-                    stringBuilder.append(amount.getText()).append(":");
-                    stringBuilder.append(vatGroup.getSelectedItem().toString()).append(":");
-                    stringBuilder.append(isPackaging.isSelected());
-
-                    dialog = ProgressDialog.show(AddToDatabase.this, "Wysyłanie danych", "Proszę czekać");
-                    ServerBluetooth.setAddingResultCallback(AddToDatabase.this);
-                    ClientBluetooth.toSend.add(stringBuilder.toString());
-                    /*AddToDatabase.this.finish();*/
-                }
-            }
-        });
+        addButtonListeners();
     }
 
     @Override
@@ -85,10 +59,13 @@ public class AddToDatabase extends Activity implements AddingResultCallback {
         if (requestCode == ADD_TO_DATABASE_REQUEST_CODE) {
             try {
                 String barCodeData = data.getStringExtra("barcode");
-                if()
+                if (!EAN13CheckDigit.checkBarcode(barCodeData)) {
+                    showRetryDialog();
+                    return;
+                }
                 barcode.setText(barCodeData);
             } catch (Exception e) {
-
+                showRetryDialog();
             }
         }
     }
@@ -112,6 +89,11 @@ public class AddToDatabase extends Activity implements AddingResultCallback {
             Toast.makeText(AddToDatabase.this, "Kod kreskowy musi mieć 13 znaków", Toast.LENGTH_SHORT).show();
             return false;
         }
+        else if(!EAN13CheckDigit.checkBarcode(barcode.getText().toString())){
+            Toast.makeText(AddToDatabase.this, "Kod kreskowy jest niepoprawny", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
         return true;
     }
 
@@ -185,7 +167,7 @@ public class AddToDatabase extends Activity implements AddingResultCallback {
                 alert.show();
             }
         };
-        if(dialog!=null && dialog.isShowing())
+        if (dialog != null && dialog.isShowing())
             dialog.dismiss();
         AddToDatabase.this.runOnUiThread(dialogShow);
     }
@@ -212,5 +194,33 @@ public class AddToDatabase extends Activity implements AddingResultCallback {
             }
         };
         AddToDatabase.this.runOnUiThread(dialogShow);
+    }
+
+    private void addButtonListeners(){
+        addBarCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Scanner.class);
+                startActivityForResult(intent, ADD_TO_DATABASE_REQUEST_CODE);
+            }
+        });
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkName() && checkBarcode() && checkPrice() && checkAmount() && checkVat()) {
+                    StringBuilder stringBuilder = new StringBuilder("");
+                    stringBuilder.append("D:");
+                    stringBuilder.append(name.getText()).append(":");
+                    stringBuilder.append(barcode.getText()).append(":");
+                    stringBuilder.append(price.getText()).append(":");
+                    stringBuilder.append(amount.getText()).append(":");
+                    stringBuilder.append(vatGroup.getSelectedItem().toString()).append(":");
+                    stringBuilder.append(isPackaging.isSelected());
+                    dialog = ProgressDialog.show(AddToDatabase.this, "Wysyłanie danych", "Proszę czekać");
+                    ServerBluetooth.setAddingResultCallback(AddToDatabase.this);
+                    ClientBluetooth.toSend.add(stringBuilder.toString());
+                }
+            }
+        });
     }
 }

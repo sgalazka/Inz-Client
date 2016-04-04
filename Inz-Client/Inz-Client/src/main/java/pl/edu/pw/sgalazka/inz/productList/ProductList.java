@@ -32,24 +32,6 @@ public class ProductList extends Activity implements ListDataReceiver{
         dialog = ProgressDialog.show(ProductList.this, "Łączenie z serwerem", "Proszę czekać...", true);
         ServerBluetooth.setListDataReciver(this);
         ClientBluetooth.toSend.add(ListDataReceiver.LIST_DATA_CODE + ":" + quantity);
-
-        /*List<ProductListRow> list = new LinkedList<>();
-
-
-        list.add(new ProductListRow(getApplicationContext(), "NazwaNazwaNa1", "5900000000008", "12"));
-        list.add(new ProductListRow(getApplicationContext(), "NazwaNazwaNa2", "5900000000009", "122"));
-        list.add(new ProductListRow(getApplicationContext(), "NazwaNazwaNa3", "5900000000010", "45"));
-
-        ProductListRow tab[] = new ProductListRow[list.size()];
-
-        for (int i = 0; i < list.size(); i++) {
-            tab[i] = list.get(i);
-        }
-
-        ProductListRowAdapter adapter = new ProductListRowAdapter(getApplicationContext(),
-                R.layout.product_list_row, tab);
-
-        listView.setAdapter(adapter);*/
     }
 
 

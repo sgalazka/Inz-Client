@@ -30,36 +30,29 @@ public class ProductListRowAdapter extends ArrayAdapter<ProductListRow> {
         View row = convertView;
         RowBeanHolder holder = null;
 
-        if(row == null)
-        {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+        if (row == null) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             row = inflater.inflate(layoutResourceId, parent, false);
-
             holder = new RowBeanHolder();
-            holder.productName = (TextView)row.findViewById(R.id.plname);
-            holder.productBarcode = (TextView)row.findViewById(R.id.plbarcode);
-            holder.productQuantity = (TextView)row.findViewById(R.id.plquantity);
+            holder.productName = (TextView) row.findViewById(R.id.plname);
+            holder.productBarcode = (TextView) row.findViewById(R.id.plbarcode);
+            holder.productQuantity = (TextView) row.findViewById(R.id.plquantity);
             holder.productName.setFocusable(false);
             holder.productBarcode.setFocusable(false);
             holder.productQuantity.setFocusable(false);
-
             row.setTag(holder);
-        }
-        else
-        {
-            holder = (RowBeanHolder)row.getTag();
+        } else {
+            holder = (RowBeanHolder) row.getTag();
         }
 
         ProductListRow object = data[position];
         holder.productName.setText(object.getName());
         holder.productBarcode.setText(object.getBarcode());
         holder.productQuantity.setText(object.getQuantity());
-
         return row;
     }
 
-    static class RowBeanHolder
-    {
+    static class RowBeanHolder {
         TextView productName;
         TextView productBarcode;
         TextView productQuantity;

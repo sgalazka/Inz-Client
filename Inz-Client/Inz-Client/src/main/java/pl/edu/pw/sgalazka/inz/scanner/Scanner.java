@@ -30,7 +30,7 @@ import java.util.Random;
 
 import pl.edu.pw.sgalazka.inz.R;
 
-
+@SuppressWarnings("deprecation")
 public class Scanner extends Activity implements SurfaceHolder.Callback{
 
     private Camera mCamera;
@@ -38,7 +38,6 @@ public class Scanner extends Activity implements SurfaceHolder.Callback{
     private SurfaceView topSurface;
     private Handler autoFocusHandler;
 
-    private Button scanButton;
     private ImageScanner scanner;
 
     private boolean barcodeScanned = false;
@@ -105,14 +104,12 @@ public class Scanner extends Activity implements SurfaceHolder.Callback{
     }*/
 
 
-    /**
-     * A safe way to get an instance of the Camera object.
-     */
     public static Camera getCameraInstance() {
         Camera c = null;
         try {
             c = Camera.open();
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return c;
     }
@@ -178,6 +175,7 @@ public class Scanner extends Activity implements SurfaceHolder.Callback{
             autoFocusHandler.postDelayed(doAutoFocus, 1000);
         }
     };
+
     private synchronized void startScanning(){
         barcodeScanned = false;
         mCamera.setPreviewCallback(previewCb);
@@ -197,9 +195,7 @@ public class Scanner extends Activity implements SurfaceHolder.Callback{
     }
 
     @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-
-    }
+    public void surfaceDestroyed(SurfaceHolder holder) {}
 
     private class Timer implements Runnable{
         @Override

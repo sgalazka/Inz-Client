@@ -23,7 +23,7 @@ public class ScanProduct extends Activity implements ScannerResultCallback {
     private EditText amount;
     private Button scan;
     private final int SCAN_PRODUCT_REQUEST_CODE = 1;
-    Dialog dialog=null;
+    private Dialog dialog = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +49,7 @@ public class ScanProduct extends Activity implements ScannerResultCallback {
         if (requestCode == SCAN_PRODUCT_REQUEST_CODE) {
             try {
                 String barCode = data.getStringExtra("barcode");
-                if (EAN13CheckDigit.checkBarcode(barCode)) {
+                if (!EAN13CheckDigit.checkBarcode(barCode)) {
                     showRetryDialog();
                     return;
                 }
@@ -58,23 +58,6 @@ public class ScanProduct extends Activity implements ScannerResultCallback {
                 ClientBluetooth.toSend.add(dataToSend);
                 dialog = ProgressDialog.show(ScanProduct.this, "Wysyłanie skanu", "Proszę czekać...", true);
             } catch (Exception e) {
-                /*Runnable dialogShow = new Runnable() {
-                    @Override
-                    public void run() {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(ScanProduct.this);
-                        builder.setMessage("Błąd odczytu! Spróbuj jeszcze raz.")
-                                .setCancelable(false)
-                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        //ScanProduct.this.finish();
-                                    }
-                                });
-                        AlertDialog alert = builder.create();
-
-                        alert.show();
-                    }
-                };
-                ScanProduct.this.runOnUiThread(dialogShow);*/
                 showRetryDialog();
                 e.printStackTrace();
             }
@@ -153,9 +136,8 @@ public class ScanProduct extends Activity implements ScannerResultCallback {
                 alert.show();
             }
         };
-        if(dialog!=null && dialog.isShowing())
+        if (dialog != null && dialog.isShowing())
             dialog.dismiss();
         ScanProduct.this.runOnUiThread(dialogShow);
     }
-
 }

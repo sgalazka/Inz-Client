@@ -36,7 +36,7 @@
     <string name="addToDatabase">Dodaj do bazy danych</string>
     <string name="barcodeOf">Kod kreskowy:</string>
     <string name="title_activity_product_list">ProductList</string>
-    <string name="get_products">Pokaż produkty na wyczerpaniu</string>
+    <string name="get_products">Pokaż produkty w bazie</string>
     <string name="list_of_products_from">Lista produktów z ilością mniejszą niż</string>
     <string name="max_quantity_to_show">Ilość sztuk produktu poniżej:</string>
     <string name="show_all">Wyświetl wszystkie</string>

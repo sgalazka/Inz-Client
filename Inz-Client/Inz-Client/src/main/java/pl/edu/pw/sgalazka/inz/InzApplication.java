@@ -61,11 +61,8 @@ public class InzApplication extends Application {
         }
     }
 
-
-
     public static void startClient(BluetoothDevice bluetoothDevice, Context context,
                                    ConnectedCallback callback) {
-
         if (clientBluetooth != null) {
             ClientBluetooth.toSend.add(STOP_CLIENT);
         }
@@ -88,16 +85,5 @@ public class InzApplication extends Application {
         };
         Thread thread = new Thread(startServerCallback);
         thread.start();
-
     }
-
-    /*private static Runnable startServerCallback = new Runnable() {
-        @Override
-        public void run() {
-            serverBluetooth = new ServerBluetooth();
-            serverBluetooth.start();
-        }
-    };*/
-
-
 }

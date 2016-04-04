@@ -10,14 +10,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.UUID;
-import java.util.concurrent.BlockingQueue;
 
 import pl.edu.pw.sgalazka.inz.InzApplication;
 import pl.edu.pw.sgalazka.inz.activities.AddingResultCallback;
 import pl.edu.pw.sgalazka.inz.activities.ScannerResultCallback;
 import pl.edu.pw.sgalazka.inz.bluetooth.client.ClientBluetooth;
 import pl.edu.pw.sgalazka.inz.devicesList.ConnectedCallback;
-import pl.edu.pw.sgalazka.inz.errorList.ErrorList;
 import pl.edu.pw.sgalazka.inz.productList.ListDataReceiver;
 
 /**
@@ -32,14 +30,13 @@ public class ServerBluetooth extends Thread {
     private ConnectedCallback connectedCallback;
     private long watchDogTimer;
     private final Object watchDogLock = new Object();
-    private static final Object reciverLock = new Object();
+    private static final Object receiverLock = new Object();
     private final Object lock = new Object();
     private static final String HEART_BEAT = "HeartBeat";
     private boolean initialized;
     private static ListDataReceiver listDataReceiver = null;
     private static ScannerResultCallback scannerResultCallback = null;
-    private static AddingResultCallback addingResultCallback= null;
-    private BlockingQueue<String> toErrorList;
+    private static AddingResultCallback addingResultCallback = null;
 
     public ServerBluetooth(ConnectedCallback connectedCallback) {
         BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -50,20 +47,17 @@ public class ServerBluetooth extends Thread {
             tmp = mBluetoothAdapter.listenUsingRfcommWithServiceRecord("PC to Android", uuid);
 
         } catch (IOException e) {
+            e.printStackTrace();
         }
-
-
         Log.d(TAG, "Created");
         running = true;
         mmServerSocket = tmp;
         initialized = false;
         this.connectedCallback = connectedCallback;
-        toErrorList = ErrorList.errorQueue;
     }
 
     @Override
     public void run() {
-
         Log.d(TAG, "Uruchamiam serwer");
 
         setWatchDogTimer(40000);
@@ -108,58 +102,47 @@ public class ServerBluetooth extends Thread {
         Thread thread = new Thread(heartBeat);
         thread.start();
 
-
-        while (running) {
+        while (isRunning()) {
             try {
-
                 tmp = in.readLine();
                 String tab[] = tmp.split(":");
                 //Log.d(TAG, "BT Server got: " + tmp);
                 if (tmp.equals(HEART_BEAT)) {
-                    setWatchDogTimer(2500);
                     thread = new Thread(heartBeat);
                     thread.start();
-                }
-                else if (tab[0].equals("ENF") || tab[0].equals("BSS") || tab[0].equals("EZQ")) {
-                    if(getScannerResultCallback()!=null){
+                } else if (tab[0].equals("ENF") || tab[0].equals("BSS") || tab[0].equals("EZQ")) {
+                    if (getScannerResultCallback() != null) {
                         getScannerResultCallback().onScannerResult(tmp);
                         setScannerResultCallback(null);
                     }
-                }else if (tab[0].equals("EEX") || tab[0].equals("DAS")){
-                    if (getAddingResultCallback()!=null){
+                } else if (tab[0].equals("EEX") || tab[0].equals("DAS")) {
+                    if (getAddingResultCallback() != null) {
                         getAddingResultCallback().onAddingResult(tmp);
                         setAddingResultCallback(null);
                     }
-                }
-                else if (tmp.charAt(0) == 'E') {
-                    ErrorList.errorQueue.add(tmp);
                 } else if (tab[0].equals(ListDataReceiver.LIST_DATA_CODE)) {
                     Log.d(TAG, tmp);
-                    if (getListDataReciver() != null) {
+                    if (getListDataReceiver() != null) {
                         Log.d(TAG, "List of products recived");
                         listDataReceiver.onListDataReceive(tmp);
                         setListDataReciver(null);
                     }
                 }
-
             } catch (IOException e) {
                 break;
             }
         }
 
         InzApplication.setConnected(false);
-
         try {
             in.close();
             mmServerSocket.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public void StopRunning() {
-
         stopRunningCallback.run();
     }
 
@@ -173,10 +156,10 @@ public class ServerBluetooth extends Thread {
     private Runnable heartBeat = new Runnable() {
         @Override
         public void run() {
-
             try {
                 sleep(2000, 0);
                 ClientBluetooth.toSend.add(HEART_BEAT);
+                setWatchDogTimer(2500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -186,7 +169,6 @@ public class ServerBluetooth extends Thread {
     private Runnable watchDog = new Runnable() {
         @Override
         public void run() {
-
             Log.d(TAG, "watchdog start");
             while (!isWatchDogError()) {
                 watchDogTick();
@@ -197,14 +179,14 @@ public class ServerBluetooth extends Thread {
                     e.printStackTrace();
                 }
             }
-            running = false;
+            setRunning(false);
             Log.d(TAG, "watchdog counted to 0, the connection is failed");
             if (!isInitialized())
                 connectedCallback.onConnected(false);
-            if(getScannerResultCallback()!=null){
+            if (getScannerResultCallback() != null) {
                 getScannerResultCallback().onScannerResult("STOP");
             }
-            if (getAddingResultCallback()!=null){
+            if (getAddingResultCallback() != null) {
                 getAddingResultCallback().onAddingResult("STOP");
             }
         }
@@ -219,18 +201,13 @@ public class ServerBluetooth extends Thread {
 
     private void watchDogTick() {
         synchronized (watchDogLock) {
-
             watchDogTimer = watchDogTimer - 500;
-            //Log.d(TAG, "watchDogTick:" + watchDogTimer);
         }
     }
 
     private boolean isWatchDogError() {
         synchronized (watchDogLock) {
-            if (watchDogTimer <= 0)
-                return true;
-            else
-                return false;
+            return watchDogTimer <= 0;
         }
     }
 
@@ -253,37 +230,37 @@ public class ServerBluetooth extends Thread {
     }
 
     public static void setListDataReciver(ListDataReceiver receiver) {
-        synchronized (reciverLock) {
+        synchronized (receiverLock) {
             listDataReceiver = receiver;
         }
     }
 
-    public static ListDataReceiver getListDataReciver() {
-        synchronized (reciverLock) {
+    public static ListDataReceiver getListDataReceiver() {
+        synchronized (receiverLock) {
             return listDataReceiver;
         }
     }
 
     public static void setScannerResultCallback(ScannerResultCallback callback) {
-        synchronized (reciverLock) {
+        synchronized (receiverLock) {
             scannerResultCallback = callback;
         }
     }
 
     public static ScannerResultCallback getScannerResultCallback() {
-        synchronized (reciverLock) {
+        synchronized (receiverLock) {
             return scannerResultCallback;
         }
     }
 
     public static void setAddingResultCallback(AddingResultCallback callback) {
-        synchronized (reciverLock) {
+        synchronized (receiverLock) {
             addingResultCallback = callback;
         }
     }
 
     public static AddingResultCallback getAddingResultCallback() {
-        synchronized (reciverLock) {
+        synchronized (receiverLock) {
             return addingResultCallback;
         }
     }
