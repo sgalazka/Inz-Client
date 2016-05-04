@@ -7,7 +7,7 @@ import android.content.res.Configuration;
 import android.util.Log;
 
 import pl.edu.pw.sgalazka.inz.bluetooth.client.ClientBluetooth;
-import pl.edu.pw.sgalazka.inz.devicesList.ConnectedCallback;
+import pl.edu.pw.sgalazka.inz.activities.devicesList.ConnectedCallback;
 import pl.edu.pw.sgalazka.inz.bluetooth.server.ServerBluetooth;
 
 /**
@@ -21,7 +21,7 @@ public class InzApplication extends Application {
     public static final String START_BLUETOOTH = "start";
 
     private static InzApplication app = null;
-    private static boolean connected;
+    private static boolean connected = false;
     private static ClientBluetooth clientBluetooth = null;
     private static ServerBluetooth serverBluetooth = null;
     private static final Object lock = new Object();

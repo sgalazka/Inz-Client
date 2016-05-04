@@ -10,11 +10,10 @@
     tools:context="pl.edu.pw.sgalazka.inz.scanner.Scanner">
 
 
-    <FrameLayout
+    <RelativeLayout
         android:id="@+id/surfaceView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="1"
         >
 
         <SurfaceView
@@ -24,12 +23,12 @@
             android:layout_gravity="center"
             android:id="@+id/scanner_top_surface"/>
 
-        <FrameLayout
+        <RelativeLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:id="@+id/scanner_bottom_surface"/>
-    </FrameLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

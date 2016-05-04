@@ -15,8 +15,8 @@ import pl.edu.pw.sgalazka.inz.InzApplication;
 import pl.edu.pw.sgalazka.inz.activities.AddingResultCallback;
 import pl.edu.pw.sgalazka.inz.activities.ScannerResultCallback;
 import pl.edu.pw.sgalazka.inz.bluetooth.client.ClientBluetooth;
-import pl.edu.pw.sgalazka.inz.devicesList.ConnectedCallback;
-import pl.edu.pw.sgalazka.inz.productList.ListDataReceiver;
+import pl.edu.pw.sgalazka.inz.activities.devicesList.ConnectedCallback;
+import pl.edu.pw.sgalazka.inz.activities.productList.ListDataReceiver;
 
 /**
  * Created by ga��zka on 2015-09-04.
@@ -124,7 +124,7 @@ public class ServerBluetooth extends Thread {
                     Log.d(TAG, tmp);
                     if (getListDataReceiver() != null) {
                         Log.d(TAG, "List of products recived");
-                        listDataReceiver.onListDataReceive(tmp);
+                        getListDataReceiver().onListDataReceive(tmp);
                         setListDataReciver(null);
                     }
                 }
@@ -172,7 +172,7 @@ public class ServerBluetooth extends Thread {
             Log.d(TAG, "watchdog start");
             while (!isWatchDogError()) {
                 watchDogTick();
-                //Log.d(TAG, "watchdog tick");
+                 Log.d(TAG, "watchdog tick");
                 try {
                     sleep(500, 0);
                 } catch (InterruptedException e) {
@@ -188,6 +188,9 @@ public class ServerBluetooth extends Thread {
             }
             if (getAddingResultCallback() != null) {
                 getAddingResultCallback().onAddingResult("STOP");
+            }
+            if (getListDataReceiver()!=null){
+                getListDataReceiver().onListDataReceive("STOP");
             }
         }
     };

@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import pl.edu.pw.sgalazka.inz.InzApplication;
 import pl.edu.pw.sgalazka.inz.R;
 import pl.edu.pw.sgalazka.inz.bluetooth.client.ClientBluetooth;
 import pl.edu.pw.sgalazka.inz.bluetooth.server.ServerBluetooth;
@@ -88,8 +89,7 @@ public class AddToDatabase extends Activity implements AddingResultCallback {
         } else if (barcode.getText().length() != 13) {
             Toast.makeText(AddToDatabase.this, "Kod kreskowy musi mieć 13 znaków", Toast.LENGTH_SHORT).show();
             return false;
-        }
-        else if(!EAN13CheckDigit.checkBarcode(barcode.getText().toString())){
+        } else if (!EAN13CheckDigit.checkBarcode(barcode.getText().toString())) {
             Toast.makeText(AddToDatabase.this, "Kod kreskowy jest niepoprawny", Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -196,7 +196,7 @@ public class AddToDatabase extends Activity implements AddingResultCallback {
         AddToDatabase.this.runOnUiThread(dialogShow);
     }
 
-    private void addButtonListeners(){
+    private void addButtonListeners() {
         addBarCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -207,7 +207,9 @@ public class AddToDatabase extends Activity implements AddingResultCallback {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkName() && checkBarcode() && checkPrice() && checkAmount() && checkVat()) {
+                if (!InzApplication.isConnected())
+                    new ServerChooseDialog(AddToDatabase.this).show();
+                else if (checkName() && checkBarcode() && checkPrice() && checkAmount() && checkVat()) {
                     StringBuilder stringBuilder = new StringBuilder("");
                     stringBuilder.append("D:");
                     stringBuilder.append(name.getText()).append(":");

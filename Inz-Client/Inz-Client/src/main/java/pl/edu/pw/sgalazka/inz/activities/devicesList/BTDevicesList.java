@@ -1,4 +1,4 @@
-package pl.edu.pw.sgalazka.inz.devicesList;
+package pl.edu.pw.sgalazka.inz.activities.devicesList;
 
 import android.app.Activity;
 import android.app.AlertDialog;

@@ -1,9 +1,7 @@
-package pl.edu.pw.sgalazka.inz.productList;
+package pl.edu.pw.sgalazka.inz.activities.productList;
 
 import android.content.Context;
 import android.util.Log;
-
-import pl.edu.pw.sgalazka.inz.R;
 
 /**
  * Created by gałązka on 2016-01-12.

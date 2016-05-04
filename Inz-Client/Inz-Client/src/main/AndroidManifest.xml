@@ -30,7 +30,7 @@
             android:label="@string/title_activity_scanner"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".devicesList.BTDevicesList"
+            android:name=".activities.devicesList.BTDevicesList"
             android:label="@string/title_activity_btdevices_list" />
         <activity
             android:name=".activities.ScanProduct"
@@ -39,10 +39,10 @@
         <activity android:name=".activities.TypeProductBarcode" />
         <activity android:name=".activities.AddToDatabase" />
         <activity
-            android:name=".productList.ProductList"
+            android:name=".activities.productList.ProductList"
             android:label="@string/title_activity_product_list"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".productList.ProductListChooser" />
+        <activity android:name=".activities.productList.ProductListChooser" />
     </application>
 
 </manifest>

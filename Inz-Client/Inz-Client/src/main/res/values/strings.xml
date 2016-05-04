@@ -45,6 +45,7 @@
     <string name="vat_groups_label">Grupa podatkowa VAT:</string>
     <string name="is_packaging">Jest opakowaniem?</string>
     <string name="price">Cena</string>
+    <string name="cancel">Anuluj</string>
 
     <string-array name="vat_groups">
         <item>A</item>

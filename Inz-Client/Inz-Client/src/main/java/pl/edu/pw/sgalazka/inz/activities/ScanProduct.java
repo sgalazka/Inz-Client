@@ -7,11 +7,13 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import pl.edu.pw.sgalazka.inz.InzApplication;
 import pl.edu.pw.sgalazka.inz.R;
 import pl.edu.pw.sgalazka.inz.bluetooth.client.ClientBluetooth;
 import pl.edu.pw.sgalazka.inz.bluetooth.server.ServerBluetooth;
@@ -36,7 +38,9 @@ public class ScanProduct extends Activity implements ScannerResultCallback {
         scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkQuantity()) {
+                if (!InzApplication.isConnected())
+                    new ServerChooseDialog(ScanProduct.this).show();
+                else if (checkQuantity()) {
                     Intent intent = new Intent(getApplicationContext(), Scanner.class);
                     startActivityForResult(intent, SCAN_PRODUCT_REQUEST_CODE);
                 }
@@ -47,20 +51,26 @@ public class ScanProduct extends Activity implements ScannerResultCallback {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == SCAN_PRODUCT_REQUEST_CODE) {
-            try {
-                String barCode = data.getStringExtra("barcode");
-                if (!EAN13CheckDigit.checkBarcode(barCode)) {
+            if (!InzApplication.isConnected())
+                new ServerChooseDialog(ScanProduct.this).show();
+            else {
+                Log.d("Scan Product", "state:"+InzApplication.isConnected());
+                try {
+                    String barCode = data.getStringExtra("barcode");
+                    if (!EAN13CheckDigit.checkBarcode(barCode)) {
+                        showRetryDialog();
+                        return;
+                    }
+                    String dataToSend = "B:" + barCode + ":" + amount.getText();
+                    ServerBluetooth.setScannerResultCallback(this);
+                    ClientBluetooth.toSend.add(dataToSend);
+                    dialog = ProgressDialog.show(ScanProduct.this, "Wysyłanie skanu", "Proszę czekać...", true);
+                } catch (Exception e) {
                     showRetryDialog();
-                    return;
+                    e.printStackTrace();
                 }
-                String dataToSend = "B:" + barCode + ":" + amount.getText();
-                ServerBluetooth.setScannerResultCallback(this);
-                ClientBluetooth.toSend.add(dataToSend);
-                dialog = ProgressDialog.show(ScanProduct.this, "Wysyłanie skanu", "Proszę czekać...", true);
-            } catch (Exception e) {
-                showRetryDialog();
-                e.printStackTrace();
             }
+
         }
     }
 

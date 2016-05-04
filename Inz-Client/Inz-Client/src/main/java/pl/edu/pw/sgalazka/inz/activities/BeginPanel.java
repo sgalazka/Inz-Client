@@ -8,10 +8,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import pl.edu.pw.sgalazka.inz.InzApplication;
 import pl.edu.pw.sgalazka.inz.R;
-import pl.edu.pw.sgalazka.inz.devicesList.BTDevicesList;
-import pl.edu.pw.sgalazka.inz.productList.ProductListChooser;
+import pl.edu.pw.sgalazka.inz.activities.devicesList.BTDevicesList;
+import pl.edu.pw.sgalazka.inz.activities.productList.ProductListChooser;
 
 public class BeginPanel extends Activity {
 

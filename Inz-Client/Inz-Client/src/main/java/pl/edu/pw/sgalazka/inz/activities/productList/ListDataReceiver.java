@@ -1,6 +1,4 @@
-package pl.edu.pw.sgalazka.inz.productList;
-
-import java.util.List;
+package pl.edu.pw.sgalazka.inz.activities.productList;
 
 /**
  * Created by gałązka on 2016-01-12.

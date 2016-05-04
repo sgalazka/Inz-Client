@@ -18,6 +18,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import net.sourceforge.zbar.Config;
@@ -72,7 +73,7 @@ public class Scanner extends Activity implements SurfaceHolder.Callback{
 
         mPreview = new CameraPreview(Scanner.this, mCamera, previewCb,
                 autoFocusCB);
-        FrameLayout preview = (FrameLayout) findViewById(R.id.scanner_bottom_surface);
+        RelativeLayout preview = (RelativeLayout) findViewById(R.id.scanner_bottom_surface);
         topSurface = (SurfaceView) findViewById(R.id.scanner_top_surface);
         topSurface.getHolder().addCallback(this);
 

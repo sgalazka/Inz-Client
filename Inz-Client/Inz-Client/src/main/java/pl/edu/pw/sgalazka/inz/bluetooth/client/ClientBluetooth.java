@@ -11,10 +11,8 @@ import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import pl.edu.pw.sgalazka.inz.activities.BeginPanel;
 import pl.edu.pw.sgalazka.inz.InzApplication;
-import pl.edu.pw.sgalazka.inz.activities.ScannerResultCallback;
-import pl.edu.pw.sgalazka.inz.devicesList.ConnectedCallback;
+import pl.edu.pw.sgalazka.inz.activities.devicesList.ConnectedCallback;
 
 /**
  * Created by ga��zka on 2015-09-04.
@@ -39,6 +37,7 @@ public class ClientBluetooth extends Thread {
         }
         catch (Exception e) {
             e.printStackTrace();
+            Log.d(TAG, "create socket failed");
         }
         mmSocket = tmp;
         this.connectedCallback = connectedCallback;
@@ -56,11 +55,14 @@ public class ClientBluetooth extends Thread {
             Log.d(TAG, "Sent star message");
         }
         catch (Exception ce) {
+            Log.d(TAG, ce + "");
+            connectedCallback.onConnected(false);
             try {
-                Log.d(TAG, ce + "");
+                ce.printStackTrace();
                 mmSocket.close();
                 return;
             } catch (Exception cle) {
+                cle.printStackTrace();
                 return;
             }
         }

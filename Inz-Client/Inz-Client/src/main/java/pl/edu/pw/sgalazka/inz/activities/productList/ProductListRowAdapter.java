@@ -1,4 +1,4 @@
-package pl.edu.pw.sgalazka.inz.productList;
+package pl.edu.pw.sgalazka.inz.activities.productList;
 
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import pl.edu.pw.sgalazka.inz.InzApplication;
 import pl.edu.pw.sgalazka.inz.R;
 import pl.edu.pw.sgalazka.inz.bluetooth.client.ClientBluetooth;
 import pl.edu.pw.sgalazka.inz.bluetooth.server.ServerBluetooth;
@@ -35,12 +36,13 @@ public class TypeProductBarcode extends Activity implements ScannerResultCallbac
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(checkAmount() && checkBarcode()){
+                if (!InzApplication.isConnected())
+                    new ServerChooseDialog(TypeProductBarcode.this).show();
+                else if(checkAmount() && checkBarcode()){
                     String dataToSend = "B:" + barcode.getText() + ":" + amount.getText();
                     ServerBluetooth.setScannerResultCallback(TypeProductBarcode.this);
                     ClientBluetooth.toSend.add(dataToSend);
                     dialog = ProgressDialog.show(TypeProductBarcode.this, "Wysyłanie skanu", "Proszę czekać...", true);
-                    /*TypeProductBarcode.this.finish();*/
                 }
             }
         });
