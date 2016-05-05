@@ -1,4 +1,4 @@
-package pl.edu.pw.sgalazka.inz.scanner;
+package pl.edu.pw.sgalazka.inz.utils;
 
 /**
  * Created by gałązka on 2016-02-03.

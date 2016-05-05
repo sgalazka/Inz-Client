@@ -13,6 +13,7 @@ import android.widget.ListView;
 import pl.edu.pw.sgalazka.inz.R;
 import pl.edu.pw.sgalazka.inz.bluetooth.client.ClientBluetooth;
 import pl.edu.pw.sgalazka.inz.bluetooth.server.ServerBluetooth;
+import pl.edu.pw.sgalazka.inz.utils.Utils;
 
 public class ProductList extends Activity implements ListDataReceiver {
 
@@ -24,7 +25,6 @@ public class ProductList extends Activity implements ListDataReceiver {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_list);
-
         listView = (ListView) findViewById(R.id.productList);
         title = (EditText) findViewById(R.id.productList_title);
 
@@ -35,7 +35,6 @@ public class ProductList extends Activity implements ListDataReceiver {
         ServerBluetooth.setListDataReciver(this);
         ClientBluetooth.toSend.add(ListDataReceiver.LIST_DATA_CODE + ":" + quantity);
     }
-
 
     @Override
     public void onListDataReceive(String data) {
@@ -51,8 +50,6 @@ public class ProductList extends Activity implements ListDataReceiver {
             ProductListRowAdapter adapter = new ProductListRowAdapter(getApplicationContext(),
                     R.layout.product_list_row, products);
             listView.setAdapter(adapter);
-        /*String titleTmp = title.getText().toString()+" "+tmp[1];
-        title.setText(titleTmp);*/
             dialog.dismiss();
             return;
         } else if (tmp[0].equals("STOP")) {
@@ -60,27 +57,6 @@ public class ProductList extends Activity implements ListDataReceiver {
         } else if (tmp[0].equals("ERR")) {
             message = "Baza jest pusta";
         }
-        showInformDialog(message);
-    }
-
-    private void showInformDialog(final String finalMessage) {
-        Runnable dialogShow = new Runnable() {
-            @Override
-            public void run() {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ProductList.this);
-                builder.setMessage(finalMessage)
-                        .setCancelable(false)
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                ProductList.this.finish();
-                            }
-                        });
-                AlertDialog alert = builder.create();
-                alert.show();
-            }
-        };
-        if (dialog != null && dialog.isShowing())
-            dialog.dismiss();
-        ProductList.this.runOnUiThread(dialogShow);
+        Utils.showInformDialog(message, true, ProductList.this, dialog);
     }
 }

@@ -19,7 +19,6 @@ public class BeginPanel extends Activity {
     private Button startAddToDatabase;
     private Button startTypeProductBarcode;
     private Button startGetProducts;
-    private static BluetoothSocket connectedSocket = null;
 
     private Button another;
 

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,14 +12,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import pl.edu.pw.sgalazka.inz.InzApplication;
 import pl.edu.pw.sgalazka.inz.R;
 import pl.edu.pw.sgalazka.inz.bluetooth.client.ClientBluetooth;
 import pl.edu.pw.sgalazka.inz.bluetooth.server.ServerBluetooth;
-import pl.edu.pw.sgalazka.inz.scanner.EAN13CheckDigit;
+import pl.edu.pw.sgalazka.inz.utils.EAN13CheckDigit;
 import pl.edu.pw.sgalazka.inz.scanner.Scanner;
+import pl.edu.pw.sgalazka.inz.utils.Utils;
 
 public class ScanProduct extends Activity implements ScannerResultCallback {
 
@@ -40,7 +41,10 @@ public class ScanProduct extends Activity implements ScannerResultCallback {
             public void onClick(View v) {
                 if (!InzApplication.isConnected())
                     new ServerChooseDialog(ScanProduct.this).show();
-                else if (checkQuantity()) {
+                else if (!BluetoothAdapter.getDefaultAdapter().isEnabled()) {
+                    Intent i = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                    startActivityForResult(i, 1);
+                } else if (Utils.checkQuantity(amount, ScanProduct.this)) {
                     Intent intent = new Intent(getApplicationContext(), Scanner.class);
                     startActivityForResult(intent, SCAN_PRODUCT_REQUEST_CODE);
                 }
@@ -54,11 +58,11 @@ public class ScanProduct extends Activity implements ScannerResultCallback {
             if (!InzApplication.isConnected())
                 new ServerChooseDialog(ScanProduct.this).show();
             else {
-                Log.d("Scan Product", "state:"+InzApplication.isConnected());
+                Log.d("Scan Product", "state:" + InzApplication.isConnected());
                 try {
                     String barCode = data.getStringExtra("barcode");
                     if (!EAN13CheckDigit.checkBarcode(barCode)) {
-                        showRetryDialog();
+                        Utils.showRetryDialog(ScanProduct.this, SCAN_PRODUCT_REQUEST_CODE);
                         return;
                     }
                     String dataToSend = "B:" + barCode + ":" + amount.getText();
@@ -66,23 +70,11 @@ public class ScanProduct extends Activity implements ScannerResultCallback {
                     ClientBluetooth.toSend.add(dataToSend);
                     dialog = ProgressDialog.show(ScanProduct.this, "Wysyłanie skanu", "Proszę czekać...", true);
                 } catch (Exception e) {
-                    showRetryDialog();
+                    Utils.showRetryDialog(ScanProduct.this, SCAN_PRODUCT_REQUEST_CODE);
                     e.printStackTrace();
                 }
             }
-
         }
-    }
-
-    private boolean checkQuantity() {
-        if (amount.getText().length() == 0) {
-            Toast.makeText(ScanProduct.this, "Wprowadź ilość", Toast.LENGTH_SHORT).show();
-            return false;
-        } else if (amount.getText().length() > 2) {
-            Toast.makeText(ScanProduct.this, "Ilość musi być mniejsza od 100", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        return true;
     }
 
     @Override
@@ -100,12 +92,11 @@ public class ScanProduct extends Activity implements ScannerResultCallback {
             returnBack = true;
         } else if (tmp[0].equals("STOP")) {
             message = "Połączenie zostało zerwane";
-            returnBack = true;
         }
-        showInformDialog(message, returnBack);
+        Utils.showInformDialog(message, returnBack, ScanProduct.this, dialog);
     }
 
-    private void showRetryDialog() {
+    /*private void showRetryDialog() {
         Runnable dialogShow = new Runnable() {
             @Override
             public void run() {
@@ -127,27 +118,5 @@ public class ScanProduct extends Activity implements ScannerResultCallback {
             }
         };
         ScanProduct.this.runOnUiThread(dialogShow);
-    }
-
-    private void showInformDialog(final String finalMessage, final boolean finalReturnBack) {
-        Runnable dialogShow = new Runnable() {
-            @Override
-            public void run() {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ScanProduct.this);
-                builder.setMessage(finalMessage)
-                        .setCancelable(false)
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                if (finalReturnBack)
-                                    ScanProduct.this.finish();
-                            }
-                        });
-                AlertDialog alert = builder.create();
-                alert.show();
-            }
-        };
-        if (dialog != null && dialog.isShowing())
-            dialog.dismiss();
-        ScanProduct.this.runOnUiThread(dialogShow);
-    }
+    }*/
 }

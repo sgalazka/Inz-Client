@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -35,9 +36,18 @@ public class BTDevicesList extends Activity implements AdapterView.OnItemClickLi
         context = getApplicationContext();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_btdevices_list);
-
         listView = (ListView) findViewById(R.id.listView);
+        listView.setOnItemClickListener(this);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+        if (!adapter.isEnabled()) {
+            Intent i = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(i, 1);
+        }
         IntentFilter filter1 = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         IntentFilter filter2 = new IntentFilter(BluetoothDevice.ACTION_ACL_CONNECTED);
         IntentFilter filter3 = new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED);
@@ -48,8 +58,14 @@ public class BTDevicesList extends Activity implements AdapterView.OnItemClickLi
         this.registerReceiver(broadcastReceiver, filter4);
         ba = BluetoothAdapter.getDefaultAdapter();
         ba.startDiscovery();
+    }
 
-        listView.setOnItemClickListener(this);
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("BTDLIST", "onDestroy");
+        ba.cancelDiscovery();
+        BTDevicesList.this.unregisterReceiver(broadcastReceiver);
     }
 
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -104,12 +120,7 @@ public class BTDevicesList extends Activity implements AdapterView.OnItemClickLi
                     AlertDialog.Builder builder = new AlertDialog.Builder(BTDevicesList.this);
                     builder.setMessage("Połączono!")
                             .setCancelable(false)
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    BTDevicesList.this.unregisterReceiver(broadcastReceiver);
-                                    BTDevicesList.this.finish();
-                                }
-                            });
+                            .setPositiveButton("OK", new BluetoothDialogOnClickListener());
                     AlertDialog alert = builder.create();
 
                     alert.show();
@@ -117,12 +128,7 @@ public class BTDevicesList extends Activity implements AdapterView.OnItemClickLi
                     AlertDialog.Builder builder = new AlertDialog.Builder(BTDevicesList.this);
                     builder.setMessage("Nie nawiązano połączenia")
                             .setCancelable(false)
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    BTDevicesList.this.unregisterReceiver(broadcastReceiver);
-                                    BTDevicesList.this.finish();
-                                }
-                            });
+                            .setPositiveButton("OK", new BluetoothDialogOnClickListener());
                     AlertDialog alert = builder.create();
 
                     alert.show();
@@ -130,6 +136,13 @@ public class BTDevicesList extends Activity implements AdapterView.OnItemClickLi
             }
         };
         this.runOnUiThread(dialogShow);
+    }
+
+    private class BluetoothDialogOnClickListener implements DialogInterface.OnClickListener {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            BTDevicesList.this.finish();
+        }
     }
 }
 

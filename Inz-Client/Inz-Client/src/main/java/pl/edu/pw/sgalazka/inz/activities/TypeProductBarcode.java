@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +17,8 @@ import pl.edu.pw.sgalazka.inz.InzApplication;
 import pl.edu.pw.sgalazka.inz.R;
 import pl.edu.pw.sgalazka.inz.bluetooth.client.ClientBluetooth;
 import pl.edu.pw.sgalazka.inz.bluetooth.server.ServerBluetooth;
-import pl.edu.pw.sgalazka.inz.scanner.EAN13CheckDigit;
+import pl.edu.pw.sgalazka.inz.utils.EAN13CheckDigit;
+import pl.edu.pw.sgalazka.inz.utils.Utils;
 
 public class TypeProductBarcode extends Activity implements ScannerResultCallback {
 
@@ -38,7 +41,11 @@ public class TypeProductBarcode extends Activity implements ScannerResultCallbac
             public void onClick(View v) {
                 if (!InzApplication.isConnected())
                     new ServerChooseDialog(TypeProductBarcode.this).show();
-                else if(checkAmount() && checkBarcode()){
+                else if (!BluetoothAdapter.getDefaultAdapter().isEnabled()) {
+                    Intent i = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                    startActivityForResult(i, 1);
+                } else if (Utils.checkAmount(amount, TypeProductBarcode.this)
+                        && Utils.checkBarcode(barcode, TypeProductBarcode.this)) {
                     String dataToSend = "B:" + barcode.getText() + ":" + amount.getText();
                     ServerBluetooth.setScannerResultCallback(TypeProductBarcode.this);
                     ClientBluetooth.toSend.add(dataToSend);
@@ -48,7 +55,7 @@ public class TypeProductBarcode extends Activity implements ScannerResultCallbac
         });
     }
 
-    private boolean checkBarcode() {
+    /*private boolean checkBarcode() {
         if (barcode.getText().length() == 0) {
             Toast.makeText(TypeProductBarcode.this, "Wprowadź kod kreskowy", Toast.LENGTH_SHORT).show();
             return false;
@@ -71,7 +78,7 @@ public class TypeProductBarcode extends Activity implements ScannerResultCallbac
             return false;
         }
         return true;
-    }
+    }*/
 
     @Override
     public void onScannerResult(String result) {
@@ -88,12 +95,11 @@ public class TypeProductBarcode extends Activity implements ScannerResultCallbac
             returnBack = true;
         } else if (tmp[0].equals("STOP")) {
             message = "Połączenie zostało zerwane";
-            returnBack = true;
         }
-        showInformDialog(message, returnBack);
+        Utils.showInformDialog(message, returnBack, TypeProductBarcode.this, dialog);
     }
 
-    private void showInformDialog(final String finalMessage, final boolean finalReturnBack) {
+    /*private void showInformDialog(final String finalMessage, final boolean finalReturnBack) {
         Runnable dialogShow = new Runnable() {
             @Override
             public void run() {
@@ -113,5 +119,5 @@ public class TypeProductBarcode extends Activity implements ScannerResultCallbac
         if (dialog != null && dialog.isShowing())
             dialog.dismiss();
         TypeProductBarcode.this.runOnUiThread(dialogShow);
-    }
+    }*/
 }
