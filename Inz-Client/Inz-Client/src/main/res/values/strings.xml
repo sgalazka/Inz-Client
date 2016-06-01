@@ -34,10 +34,10 @@
     <string name="codeOf">Kod z kasy:</string>
     <string name="addBarcode">Dodaj kod kreskowy</string>
     <string name="addToDatabase">Dodaj do bazy danych</string>
-    <string name="barcodeOf">Kod kreskowy:</string>
+    <string name="barcodeOf">Kod kreskowy</string>
     <string name="title_activity_product_list">ProductList</string>
     <string name="get_products">Pokaż produkty w bazie</string>
-    <string name="list_of_products_from">Lista produktów z ilością mniejszą niż</string>
+    <string name="list_of_products_from">Lista produktów</string>
     <string name="max_quantity_to_show">Ilość sztuk produktu poniżej:</string>
     <string name="show_all">Wyświetl wszystkie</string>
     <string name="show_selected">Wyświetl wybrane</string>
@@ -46,6 +46,19 @@
     <string name="is_packaging">Jest opakowaniem?</string>
     <string name="price">Cena</string>
     <string name="cancel">Anuluj</string>
+    <string name="toast_name_empty">Wprowadź nazwę</string>
+    <string name="toast_barcode_empty">Wprowadź kod kreskowy</string>
+    <string name="toast_name_too_much_cases">Nazwa musi miec mniej niż 19 znaków</string>
+    <string name="toast_barcode_wrong_length">Kod kreskowy musi mieć 13 znaków</string>
+    <string name="toast_barcode_wrong">Kod kreskowy jest niepoprawny</string>
+    <string name="toast_price_empty">Wprowadź cenę</string>
+    <string name="toast_price_too_high">Za duża cena</string>
+    <string name="toast_price_coma_places">Cena może mieć dwa miejsca po przecinku</string>
+    <string name="toast_amount_empty">Wprowadź ilość</string>
+    <string name="toast_amount_too_high">Ilość musi być mniejsza niż 100</string>
+    <string name="toast_vat_empty">Wybierz grupę VAT</string>
+    <string name="toast_quantity_empty">Wprowadź ilość</string>
+    <string name="toast_quantity_too_high">Ilość musi być mniejsza od 100</string>
 
     <string-array name="vat_groups">
         <item>A</item>

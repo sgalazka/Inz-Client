@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="pl.edu.pw.sgalazka.inz">
+    package="pl.edu.pw.sgalazka.client">
 
     <uses-permission android:name="android.permission.CAMERA" />
 

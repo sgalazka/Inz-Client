@@ -16,7 +16,7 @@
         android:layout_below="@+id/productList_title"
         android:layout_alignParentStart="true" />
 
-    <EditText
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/productList_title"
@@ -24,6 +24,6 @@
         android:layout_centerHorizontal="true"
         android:text="@string/list_of_products_from"
         android:textStyle="bold"
-        android:textSize="30dp" />
+        android:textSize="30sp" />
 
 </RelativeLayout>
